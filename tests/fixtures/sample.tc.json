@@ -1,0 +1,122 @@
+{
+  "schema": "1.0",
+  "threats": [
+    {
+      "id": "threat-001",
+      "numericId": 1,
+      "statement": "An internet-based attacker can inject malicious SQL queries via the search API, which leads to unauthorized data access",
+      "status": "identified",
+      "threatSource": "An internet-based attacker",
+      "prerequisites": "",
+      "threatAction": "can inject malicious SQL queries via the search API",
+      "threatImpact": "which leads to unauthorized data access",
+      "impactedAssets": ["search-api", "database"],
+      "impactedGoal": ["confidentiality"],
+      "metadata": [
+        {"key": "STRIDE", "value": "T"},
+        {"key": "STRIDE", "value": "I"},
+        {"key": "Priority", "value": "High"}
+      ]
+    },
+    {
+      "id": "threat-002",
+      "numericId": 2,
+      "statement": "An insider with access to the logging system can view sensitive user data in logs, which leads to information disclosure",
+      "status": "identified",
+      "threatSource": "An insider",
+      "prerequisites": "with access to the logging system",
+      "threatAction": "can view sensitive user data in logs",
+      "threatImpact": "which leads to information disclosure",
+      "impactedAssets": ["logging-service"],
+      "impactedGoal": ["confidentiality"],
+      "metadata": [
+        {"key": "I", "value": "Information Disclosure"},
+        {"key": "Priority", "value": "Medium"}
+      ]
+    },
+    {
+      "id": "threat-003",
+      "numericId": 3,
+      "statement": "An external attacker can exploit a vulnerable dependency to execute arbitrary code, which leads to system compromise",
+      "status": "threatResolved",
+      "threatSource": "An external attacker",
+      "prerequisites": "",
+      "threatAction": "can exploit a vulnerable dependency to execute arbitrary code",
+      "threatImpact": "which leads to system compromise",
+      "impactedAssets": ["application-server"],
+      "impactedGoal": ["integrity"],
+      "metadata": [
+        {"key": "T", "value": "Tampering"},
+        {"key": "E", "value": "Elevation of Privilege"},
+        {"key": "Priority", "value": "High"}
+      ]
+    },
+    {
+      "id": "threat-004",
+      "numericId": 4,
+      "statement": "An attacker can steal exposed credentials from source code, which leads to unauthorized access to cloud resources",
+      "status": "identified",
+      "threatSource": "An attacker",
+      "prerequisites": "",
+      "threatAction": "can steal exposed credentials from source code",
+      "threatImpact": "which leads to unauthorized access to cloud resources",
+      "impactedAssets": ["source-code-repo", "cloud-infrastructure"],
+      "impactedGoal": ["confidentiality"],
+      "metadata": [
+        {"key": "I", "value": "Information Disclosure"},
+        {"key": "S", "value": "Spoofing"},
+        {"key": "Priority", "value": "High"}
+      ]
+    },
+    {
+      "id": "threat-005",
+      "numericId": 5,
+      "statement": "An attacker can perform cross-site scripting via user input fields, which leads to session hijacking",
+      "status": "identified",
+      "threatSource": "An attacker",
+      "prerequisites": "",
+      "threatAction": "can perform cross-site scripting via user input fields",
+      "threatImpact": "which leads to session hijacking",
+      "impactedAssets": ["web-frontend"],
+      "impactedGoal": ["integrity", "confidentiality"],
+      "metadata": [
+        {"key": "T", "value": "Tampering"},
+        {"key": "I", "value": "Information Disclosure"},
+        {"key": "Priority", "value": "High"}
+      ]
+    }
+  ],
+  "mitigations": [
+    {
+      "id": "mit-001",
+      "numericId": 1,
+      "content": "Use parameterized queries for all database access",
+      "status": "mitigationResolved"
+    },
+    {
+      "id": "mit-002",
+      "numericId": 2,
+      "content": "Implement structured logging that redacts PII",
+      "status": "inProgress"
+    },
+    {
+      "id": "mit-003",
+      "numericId": 3,
+      "content": "Enable Dependabot and auto-merge patch updates",
+      "status": "mitigationResolved"
+    },
+    {
+      "id": "mit-004",
+      "numericId": 4,
+      "content": "Set up pre-commit hooks with credential scanning",
+      "status": "mitigationResolved"
+    }
+  ],
+  "mitigationLinks": [
+    {"linkedId": "threat-001", "mitigationId": "mit-001"},
+    {"linkedId": "threat-002", "mitigationId": "mit-002"},
+    {"linkedId": "threat-003", "mitigationId": "mit-003"},
+    {"linkedId": "threat-004", "mitigationId": "mit-004"}
+  ],
+  "assumptionLinks": []
+}
