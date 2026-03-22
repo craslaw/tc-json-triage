@@ -27,8 +27,8 @@ from tc_json_triage.parsers.threat_model import parse_threat_model
     "sarif_files",
     required=True,
     multiple=True,
-    type=click.Path(exists=True, dir_okay=False),
-    help="Path to SARIF scan result file (can be repeated).",
+    type=click.Path(exists=True),
+    help="Path to SARIF scan result file or directory (can be repeated).",
 )
 @click.option(
     "--output-format",
@@ -50,6 +50,19 @@ def main(
     output_path: str | None,
 ) -> None:
     """Correlate security scan findings against a threat-composer threat model."""
+    # Expand any directory paths to SARIF files within them
+    expanded = []
+    for p in sarif_files:
+        path = Path(p)
+        if path.is_dir():
+            matches = sorted(path.glob("*.sarif")) + sorted(path.glob("*.sarif.json"))
+            if not matches:
+                click.echo(f"Warning: no SARIF files found in {p}", err=True)
+            expanded.extend(str(m) for m in matches)
+        else:
+            expanded.append(p)
+    sarif_files = tuple(expanded)
+
     # Parse threat model
     model = parse_threat_model(threat_model)
     click.echo(
