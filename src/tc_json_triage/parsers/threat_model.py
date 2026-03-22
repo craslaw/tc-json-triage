@@ -23,9 +23,15 @@ def _extract_stride(metadata: list[dict[str, Any]]) -> list[str]:
         # Metadata keys like "STRIDE" with values "S", "T", etc.
         if key == "STRIDE":
             val = entry.get("value", "")
-            for ch in val:
-                if ch.upper() in _STRIDE_KEYS:
-                    stride.append(ch.upper())
+            # Handle list values like ["S", "T"] or string values like "ST"
+            if isinstance(val, list):
+                for item in val:
+                    if isinstance(item, str) and item.upper() in _STRIDE_KEYS:
+                        stride.append(item.upper())
+            else:
+                for ch in val:
+                    if ch.upper() in _STRIDE_KEYS:
+                        stride.append(ch.upper())
         # Also handle individual STRIDE keys (e.g. key="S", value="Spoofing")
         if key.upper() in _STRIDE_KEYS:
             stride.append(key.upper())
@@ -40,7 +46,18 @@ def _extract_priority(metadata: list[dict[str, Any]]) -> str:
 
 
 def _extract_metadata_dict(metadata: list[dict[str, Any]]) -> dict[str, str]:
-    return {e.get("key", ""): e.get("value", "") for e in metadata if e.get("key")}
+    result: dict[str, str] = {}
+    for e in metadata:
+        key = e.get("key", "")
+        if not key:
+            continue
+        val = e.get("value", "")
+        # Convert list values to comma-separated strings
+        if isinstance(val, list):
+            result[key] = ",".join(str(v) for v in val)
+        else:
+            result[key] = str(val) if val is not None else ""
+    return result
 
 
 def _extract_impacted_assets(statement_parts: dict[str, Any]) -> list[str]:
