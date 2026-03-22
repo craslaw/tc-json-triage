@@ -13,3 +13,5 @@ htmlcov/
 *.so
 .env
 .claude/*
+*.tc.json
+sarifs/
