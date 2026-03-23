@@ -12,6 +12,6 @@ venv/
 htmlcov/
 *.so
 .env
-.claude/*
+.claude/settings.local.json
 *.tc.json
 sarifs/
